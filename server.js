@@ -5,6 +5,66 @@ var path = require('path');
 var app = express();
 app.use(morgan('combined'));
 
+var articleOne = {
+  title: 'Article One | Shivam Kapoor',
+  heading: 'Article One',
+  date: 'Aug 3, 2017',
+  content: `
+    <p>This is content from article one. Paragraph I.</p>
+    <p>This is content from article one. Paragraph II.</p>
+    `
+};
+
+var articleTwo = {
+  title: 'Article Two | Shivam Kapoor',
+  heading: 'Article Two',
+  date: 'Aug 14, 2017',
+  content: `
+    <p>This is content from article two. Paragraph I.</p>
+    <p>This is content from article two. Paragraph II.</p>
+    `
+};
+
+function createArticleTemplate(data) {
+  var title = data.title;
+  var heading = data.heading;
+  var date = data.date;
+  var content = data.content;
+
+  var articleTemplate =	`
+    <html>
+      <head>
+	<tile>${title}</title>
+	<meta name="viewport" content="width-device-width, initial-scale=1"/>
+	<link href="/ui/style.css" rel="stylesheet"/>
+      </head>
+      <body>
+	<div class="container">
+	  <div><a href="/">Home</a></div>
+	  <hr/>
+	  <h3>${heading}</h3>
+	  <div>${date}</div>
+	  <div>${content}</div>
+	</div>
+      </body>
+    </html>
+    `;
+
+    return articleTemplate;
+}
+
+app.get('/text', function (req, res) {
+  res.send('This is text message.');
+});
+
+app.get('/article-one', function (req, res) {
+  res.send(createArticleTemplate(articleOne))
+});
+
+app.get('/article-two', function (req, res) {
+  res.send(createArticleTemplate(articleTwo))
+});
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
@@ -21,7 +81,7 @@ app.get('/ui/madi.png', function (req, res) {
 // Do not change port, otherwise your app won't run on IMAD servers
 // Use 8080 only for local development if you already have apache running on 80
 
-var port = 80;
+var port = 8081;
 app.listen(port, function () {
   console.log(`IMAD course app listening on port ${port}!`);
 });
