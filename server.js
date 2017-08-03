@@ -58,14 +58,20 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
-app.get('/:articleName', function (req, res) {
-  var articleName = req.params.articleName;
-  Res.send(createArticleTemplate(articles[articleName]))
+app.get('/article-two', function (req, res) {
+  res.send(createArticleTemplate(articles[article-two]))
 });
 
-// app.get('/article-two', function (req, res) {
-//   res.send(createArticleTemplate(articles[article-two]))
-// });
+var counter = 0;
+app.get('/counter', function (req, res) {
+  counter = counter + 1
+  res.send(counter.toString())
+});
+
+app.get('/:articleName', function (req, res) {
+  var articleName = req.params.articleName;
+  res.send(createArticleTemplate(articles[articleName]))
+});
 
 app.get('/text', function (req, res) {
   res.send('This is text message.');
