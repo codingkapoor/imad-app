@@ -34,7 +34,7 @@ button.onclick = function () {
     }
 
     // Make a request to the counter endpoint
-   request.open('GET', 'http://http://mailtoshivamk.imad.hasura-app.io/:80/counter', true);
+   request.open('GET', 'http://mailtoshivamk.imad.hasura-app.io:80/counter', true);
    request.send(null); 
 };
 
@@ -64,7 +64,7 @@ submit.onclick = function () {
     // Make a request to the counter endpoint
    var nameInput = document.getElementById("name");
    var name = nameInput.value;
-   request.open('GET', 'http://http://mailtoshivamk.imad.hasura-app.io/:80/addName?name=' + name, true);
+   request.open('GET', 'http://mailtoshivamk.imad.hasura-app.io:80/addName?name=' + name, true);
    request.send(null); 
 };
 
