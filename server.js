@@ -62,10 +62,6 @@ app.get('/addName', function (req, res) {
   res.send(JSON.stringify(names));
 });
 
-app.get('/articles/article-two', function (req, res) {
-  res.send(createArticleTemplate(articles[article-two]))
-});
-
 var counter = 0;
 app.get('/counter', function (req, res) {
   counter = counter + 1
