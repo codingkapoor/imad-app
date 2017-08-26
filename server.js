@@ -1,30 +1,19 @@
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
+var Pool = require('pg').Pool;
+
+var config = {
+    user: 'mailtoshivamk',
+    database: 'mailtoshivamk',
+    host: 'db.imad.hasura-app.io',
+    port: '5432',
+    password: process.env.DB_PASSWORD
+};
+var pool = new Pool(config);
 
 var app = express();
 app.use(morgan('combined'));
-
-var articles = {
-    'article-one': {
-      title: 'Article One | Shivam Kapoor',
-      heading: 'Article One',
-      date: 'Aug 3, 2017',
-      content: `
-	<p>This is content from article one. Paragraph I.</p>
-	<p>This is content from article one. Paragraph II.</p>
-	`
-    },
-    'article-two': {
-      title: 'Article Two | Shivam Kapoor',
-      heading: 'Article Two',
-      date: 'Aug 14, 2017',
-      content: `
-	<p>This is content from article two. Paragraph I.</p>
-	<p>This is content from article two. Paragraph II.</p>
-	`
-    }
-};
 
 function createArticleTemplate(data) {
   var title = data.title;
@@ -73,7 +62,7 @@ app.get('/addName', function (req, res) {
   res.send(JSON.stringify(names));
 });
 
-app.get('/article-two', function (req, res) {
+app.get('/articles/article-two', function (req, res) {
   res.send(createArticleTemplate(articles[article-two]))
 });
 
@@ -83,9 +72,21 @@ app.get('/counter', function (req, res) {
   res.send(counter.toString())
 });
 
-app.get('/:articleName', function (req, res) {
+app.get('/articles/:articleName', function (req, res) {
   var articleName = req.params.articleName;
-  res.send(createArticleTemplate(articles[articleName]))
+  
+  pool.query("SELECT * FROM article WHERE title = '" + articleName + "'", function(err, result) {
+      if(err) {
+          res.status(500).send(err.toString());
+      } else {
+          if(result.rows.length === 0) {
+              res.status(404).send('Article not found');
+          } else {
+              var articleData = result.rows[0];
+              res.send(createArticleTemplate(articleData));
+          }
+      }
+  });
 });
 
 app.get('/text', function (req, res) {
