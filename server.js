@@ -55,11 +55,6 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
-app.get('/hash/:input', function(req, res) {
-    var hashedString = hash(req.params.input, 'this-is-some-random-string');
-    res.send(hashedString);
-});
-
 app.post('/create-user', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
@@ -99,27 +94,6 @@ app.post('/login', function(req, res) {
     });
 });
 
-var names = [];
-app.get('/addName/:name', function (req, res) {
-  var name = req.params.name;
-  names.push(name);
-  
-  res.send(JSON.stringify(names));
-});
-
-app.get('/addName', function (req, res) {
-  var name = req.query.name;
-  names.push(name);
-  
-  res.send(JSON.stringify(names));
-});
-
-var counter = 0;
-app.get('/counter', function (req, res) {
-  counter = counter + 1
-  res.send(counter.toString())
-});
-
 app.get('/articles/:articleName', function (req, res) {
   var articleName = req.params.articleName;
   
@@ -139,10 +113,6 @@ app.get('/articles/:articleName', function (req, res) {
           }
       }
   });
-});
-
-app.get('/text', function (req, res) {
-  res.send('This is text message.');
 });
 
 app.get('/ui/style.css', function (req, res) {
